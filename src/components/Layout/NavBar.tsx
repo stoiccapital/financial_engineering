@@ -1,10 +1,26 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
+import { supabase } from '@/lib/supabaseClient';
 
 const NavBar = () => {
   const router = useRouter();
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+
+  useEffect(() => {
+    checkAuth();
+  }, []);
+
+  const checkAuth = async () => {
+    const { data: { session } } = await supabase.auth.getSession();
+    setIsAuthenticated(!!session);
+  };
+
+  const handleLogout = async () => {
+    await supabase.auth.signOut();
+    router.push('/auth/login');
+  };
 
   const navItems = [
     { 
@@ -50,24 +66,34 @@ const NavBar = () => {
   };
 
   const NavLinks = () => (
-    <nav className="space-y-1">
-      {navItems.map((item) => {
-        const isActive = router.pathname === item.href;
-        return (
-          <Link
-            key={item.href}
-            href={item.href}
-            className={`flex items-center px-4 py-3 rounded-lg transition-colors ${
-              isActive
-                ? 'bg-primary-100 text-primary-700'
-                : 'text-gray-600 hover:bg-gray-100 hover:text-gray-900'
-            }`}
-          >
-            <span className="mr-3">{item.icon}</span>
-            {item.label}
-          </Link>
-        );
-      })}
+    <nav className="flex flex-col h-full">
+      <div className="space-y-1">
+        {navItems.map((item) => {
+          const isActive = router.pathname === item.href;
+          return (
+            <Link
+              key={item.href}
+              href={item.href}
+              className={`flex items-center px-4 py-3 rounded-lg transition-colors ${
+                isActive
+                  ? 'bg-primary-100 text-primary-700'
+                  : 'text-gray-600 hover:bg-gray-100 hover:text-gray-900'
+              }`}
+            >
+              <span className="mr-3">{item.icon}</span>
+              {item.label}
+            </Link>
+          );
+        })}
+      </div>
+      {isAuthenticated && (
+        <button
+          onClick={handleLogout}
+          className="mt-auto mb-4 ml-4 px-4 py-2 rounded shadow hover:bg-gray-100 focus:outline-none focus:ring text-gray-600 hover:text-gray-900"
+        >
+          Log Out
+        </button>
+      )}
     </nav>
   );
 
@@ -101,7 +127,7 @@ const NavBar = () => {
         <div className="p-6 border-b border-gray-200">
           <h1 className="text-xl font-bold text-gray-900">Financial Tracker</h1>
         </div>
-        <div className="p-4">
+        <div className="p-4 h-[calc(100vh-5rem)]">
           <NavLinks />
         </div>
       </aside>
@@ -127,7 +153,7 @@ const NavBar = () => {
           <div className="p-6 border-b border-gray-200">
             <h1 className="text-xl font-bold text-gray-900">Financial Tracker</h1>
           </div>
-          <div className="p-4">
+          <div className="p-4 h-[calc(100vh-5rem)]">
             <NavLinks />
           </div>
         </div>
