@@ -4,6 +4,7 @@ import { useAuth } from '@/hooks/useAuth'
 import { useNetworth } from '@/hooks/useNetworth'
 import { useIncomeExpense } from '@/hooks/useIncomeExpense'
 import Projections from '@/components/Dashboard/Projections'
+import { formatNumber } from '@/utils/formatNumber'
 
 export default function Dashboard() {
   const { user, loading: authLoading } = useAuth()
@@ -39,37 +40,37 @@ export default function Dashboard() {
   const metrics = [
     {
       title: 'Net Worth',
-      value: formatCurrency(networthSummary.netWorth),
+      value: formatNumber(networthSummary.netWorth),
       description: 'Total assets minus liabilities',
       color: 'bg-blue-50 text-blue-700',
     },
     {
       title: 'Total Assets',
-      value: formatCurrency(networthSummary.totalAssets),
+      value: formatNumber(networthSummary.totalAssets),
       description: 'Sum of all assets',
       color: 'bg-green-50 text-green-700',
     },
     {
       title: 'Total Liabilities',
-      value: formatCurrency(networthSummary.totalLiabilities),
+      value: formatNumber(networthSummary.totalLiabilities),
       description: 'Sum of all liabilities',
       color: 'bg-red-50 text-red-700',
     },
     {
       title: 'Average Income',
-      value: formatCurrency(incomeExpenseSummary.averageIncome),
+      value: formatNumber(incomeExpenseSummary.averageIncome),
       description: 'Monthly average income',
       color: 'bg-purple-50 text-purple-700',
     },
     {
       title: 'Average Expense',
-      value: formatCurrency(incomeExpenseSummary.averageExpense),
+      value: formatNumber(incomeExpenseSummary.averageExpense),
       description: 'Monthly average expenses',
       color: 'bg-orange-50 text-orange-700',
     },
     {
       title: 'Monthly Savings',
-      value: formatCurrency(incomeExpenseSummary.savings),
+      value: formatNumber(incomeExpenseSummary.savings),
       description: 'Average monthly savings',
       color: 'bg-teal-50 text-teal-700',
     },

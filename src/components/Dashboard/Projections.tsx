@@ -9,6 +9,7 @@ import {
   Legend,
   ResponsiveContainer,
 } from 'recharts';
+import { formatNumber } from '@/utils/formatNumber';
 
 type ProjectionData = {
   year: number;
@@ -109,10 +110,10 @@ export default function Projections({ networth, monthlySavings }: ProjectionsPro
                   {data.year}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                  {formatCurrency(data.projectedSavings)}
+                  {formatNumber(data.projectedSavings)}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                  {formatCurrency(data.projectedAssets)}
+                  {formatNumber(data.projectedAssets)}
                 </td>
               </tr>
             ))}
@@ -138,11 +139,11 @@ export default function Projections({ networth, monthlySavings }: ProjectionsPro
               label={{ value: 'Years', position: 'insideBottom', offset: -5 }}
             />
             <YAxis
-              tickFormatter={(value) => formatCurrency(value)}
+              tickFormatter={(value) => formatNumber(value)}
               label={{ value: 'Amount', angle: -90, position: 'insideLeft' }}
             />
             <Tooltip
-              formatter={(value: number) => formatCurrency(value)}
+              formatter={(value: number) => formatNumber(value)}
               labelFormatter={(label) => `Year ${label}`}
             />
             <Legend />
