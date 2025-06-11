@@ -8,8 +8,8 @@ import { formatNumber } from '@/utils/formatNumber'
 
 export default function Dashboard() {
   const { user, loading: authLoading } = useAuth()
-  const { summary: networthSummary, loading: networthLoading } = useNetworth()
-  const { summary: incomeExpenseSummary, loading: incomeExpenseLoading } = useIncomeExpense()
+  const { summary: networthSummary, loading: networthLoading, error: networthError } = useNetworth()
+  const { summary: incomeExpenseSummary, loading: incomeExpenseLoading, error: incomeExpenseError } = useIncomeExpense()
   const router = useRouter()
 
   useEffect(() => {
@@ -18,10 +18,37 @@ export default function Dashboard() {
     }
   }, [user, authLoading, router])
 
+  // Log errors and data for debugging
+  useEffect(() => {
+    if (networthError) {
+      console.error('Networth Error:', networthError)
+    }
+    if (incomeExpenseError) {
+      console.error('Income Expense Error:', incomeExpenseError)
+    }
+    if (!networthLoading && !incomeExpenseLoading) {
+      console.log('Networth Summary:', networthSummary)
+      console.log('Income Expense Summary:', incomeExpenseSummary)
+    }
+  }, [networthError, incomeExpenseError, networthLoading, incomeExpenseLoading, networthSummary, incomeExpenseSummary])
+
   if (authLoading || networthLoading || incomeExpenseLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
+      </div>
+    )
+  }
+
+  // Show error state if there are errors
+  if (networthError || incomeExpenseError) {
+    return (
+      <div className="container mx-auto px-4 py-8">
+        <div className="bg-red-50 border border-red-200 rounded-lg p-4 mb-4">
+          <h2 className="text-lg font-semibold text-red-800 mb-2">Error Loading Data</h2>
+          {networthError && <p className="text-red-600">{networthError}</p>}
+          {incomeExpenseError && <p className="text-red-600">{incomeExpenseError}</p>}
+        </div>
       </div>
     )
   }

@@ -1,9 +1,6 @@
 import { useEffect, useState } from 'react'
-import { createClient, User } from '@supabase/supabase-js'
-
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!
-const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-const supabase = createClient(supabaseUrl, supabaseAnonKey)
+import { User } from '@supabase/supabase-js'
+import { supabase } from '@/lib/supabaseClient'
 
 export function useAuth() {
   const [user, setUser] = useState<User | null>(null)
