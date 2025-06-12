@@ -1,8 +1,6 @@
-import Layout from '@/components/Layout/Layout';
-
 export default function Home() {
   return (
-    <Layout>
+    <div className="container mx-auto px-4 py-8">
       <h1 className="text-3xl font-bold">Welcome to Financial Tracker</h1>
       <p className="mt-4 text-gray-600">
         Your comprehensive solution for managing personal finances, tracking net worth, and planning your budget.
@@ -21,6 +19,6 @@ export default function Home() {
           <p className="text-gray-600">Create and manage budgets to achieve your financial goals.</p>
         </div>
       </div>
-    </Layout>
+    </div>
   );
 } 
